@@ -39,6 +39,7 @@ jobs:
           echo "SDL2_DIR=${{ github.workspace }}/SDL2-${{ matrix.sdl2_ver }}/cmake" >> $GITHUB_ENV
 
       - name: Configure CMake
+        shell: cmd
         run: |
           cmake -S . -B ./build -A ${{ matrix.arch }} \
             -DCMAKE_BUILD_TYPE=${{ matrix.build }} \
