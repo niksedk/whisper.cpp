@@ -37,19 +37,20 @@ jobs:
           Invoke-WebRequest -Uri https://github.com/libsdl-org/SDL/releases/download/release-${{ matrix.sdl2_ver }}/SDL2-devel-${{ matrix.sdl2_ver }}-VC.zip -OutFile sdl2.zip
           7z x sdl2.zip
           echo "SDL2_DIR=${{ github.workspace }}/SDL2-${{ matrix.sdl2_ver }}/cmake" >> $GITHUB_ENV
-
+      
       - name: Configure CMake
         shell: cmd
         run: |
-          cmake -S . -B ./build -A ${{ matrix.arch }} \
-            -DCMAKE_BUILD_TYPE=${{ matrix.build }} \
-            -DGGML_CUDA=${{ matrix.cublas }} \
+          cmake -S . -B ./build -A ${{ matrix.arch }} ^
+            -DCMAKE_BUILD_TYPE=${{ matrix.build }} ^
+            -DGGML_CUDA=${{ matrix.cublas }} ^
             -DWHISPER_SDL2=${{ matrix.sdl2 }}
-
+  
       - name: Build Project
+        shell: cmd
         run: |
           cd ./build
-          cmake --build . --config ${{ matrix.build }}
+          cmake --build . --config ${{ matrix.build }}          
 
       - name: Copy CUDA DLLs
         run: |
