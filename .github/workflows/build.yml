@@ -10,7 +10,7 @@ jobs:
         arch: [x64]
         cublas: [ON]
         sdl2: [ON]
-        cuda-toolkit: [12.2.0, 11.8.0]
+        cuda-toolkit: [11.8.0]
         include:
           - arch: x64
             sdl2: ON
@@ -37,7 +37,13 @@ jobs:
           Invoke-WebRequest -Uri https://github.com/libsdl-org/SDL/releases/download/release-${{ matrix.sdl2_ver }}/SDL2-devel-${{ matrix.sdl2_ver }}-VC.zip -OutFile sdl2.zip
           7z x sdl2.zip
           echo "SDL2_DIR=${{ github.workspace }}/SDL2-${{ matrix.sdl2_ver }}/cmake" >> $GITHUB_ENV
-      
+          echo "${{ github.workspace }}/SDL2-${{ matrix.sdl2_ver }}/cmake" > SDL2_PATH.txt
+
+      - name: Debug SDL2_DIR
+        run: |
+          echo SDL2_DIR=$env:SDL2_DIR
+          ls $env:SDL2_DIR
+  
       - name: Configure CMake
         shell: cmd
         run: |
