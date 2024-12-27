@@ -34,7 +34,7 @@ jobs:
       - name: Fetch SDL2 and set SDL2_DIR
         if: matrix.sdl2 == 'ON'
         run: |
-          wget -qO sdl2.zip https://github.com/libsdl-org/SDL/releases/download/release-${{ matrix.sdl2_ver }}/SDL2-devel-${{ matrix.sdl2_ver }}-VC.zip
+          Invoke-WebRequest -Uri https://github.com/libsdl-org/SDL/releases/download/release-${{ matrix.sdl2_ver }}/SDL2-devel-${{ matrix.sdl2_ver }}-VC.zip -OutFile sdl2.zip
           7z x sdl2.zip
           echo "SDL2_DIR=${{ github.workspace }}/SDL2-${{ matrix.sdl2_ver }}/cmake" >> $GITHUB_ENV
 
