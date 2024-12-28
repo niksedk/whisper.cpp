@@ -36,13 +36,19 @@ jobs:
         run: |
           Invoke-WebRequest -Uri https://github.com/libsdl-org/SDL/releases/download/release-${{ matrix.sdl2_ver }}/SDL2-devel-${{ matrix.sdl2_ver }}-VC.zip -OutFile sdl2.zip
           7z x sdl2.zip
-          echo "SDL2_DIR=${{ github.workspace }}/SDL2-${{ matrix.sdl2_ver }}/cmake" >> $GITHUB_ENV
-          echo "${{ github.workspace }}/SDL2-${{ matrix.sdl2_ver }}/cmake" > SDL2_PATH.txt
+          echo "SDL2_DIR=${{ github.workspace }}\SDL2-${{ matrix.sdl2_ver }}\cmake" | Out-File -FilePath $env:GITHUB_ENV -Append
+          echo "${{ github.workspace }}\SDL2-${{ matrix.sdl2_ver }}\cmake" > SDL2_PATH.txt
 
       - name: Debug SDL2_DIR
         run: |
           echo SDL2_DIR=$env:SDL2_DIR
           ls $env:SDL2_DIR
+
+      - name: Debug SDL2 extraction
+        if: matrix.sdl2 == 'ON'
+        run: |
+          dir "SDL2-${{ matrix.sdl2_ver }}"
+          dir "SDL2-${{ matrix.sdl2_ver }}/cmake"          
   
       - name: Configure CMake
         shell: cmd
@@ -51,7 +57,7 @@ jobs:
             -DCMAKE_BUILD_TYPE=${{ matrix.build }} ^
             -DGGML_CUDA=${{ matrix.cublas }} ^
             -DWHISPER_SDL2=${{ matrix.sdl2 }} ^
-            -DSDL2_DIR=$env:SDL2_DIR
+            -DSDL2_DIR="%SDL2_DIR%" ^
   
       - name: Build Project
         shell: cmd
