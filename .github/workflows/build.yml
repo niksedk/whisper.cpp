@@ -56,8 +56,9 @@ jobs:
           cmake -S . -B ./build -A ${{ matrix.arch }} ^
             -DCMAKE_BUILD_TYPE=${{ matrix.build }} ^
             -DGGML_CUDA=${{ matrix.cublas }} ^
+            -DCMAKE_CUDA_ARCHITECTURES=86  ^
             -DWHISPER_SDL2=${{ matrix.sdl2 }} ^
-            -DSDL2_DIR="%SDL2_DIR%" ^
+            -DSDL2_DIR="%SDL2_DIR%"
   
       - name: Build Project
         shell: cmd
